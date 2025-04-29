@@ -1,0 +1,804 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Agent SDKに関する調査 - DS Study Logs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agent-sdk" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="DS Study Logs" class="md-header__button md-logo" aria-label="DS Study Logs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DS Study Logs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agent SDKに関する調査
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DS Study Logs" class="md-nav__button md-logo" aria-label="DS Study Logs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DS Study Logs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Logs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Logs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2025-04-28-log.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2025-04-28
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-agent-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Agent SDKとは？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Agent SDKとは？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-agent-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Agent SDKの定義と概要
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-openai-agent-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 OpenAi Agent SDKを用いた場合
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. まとめと今後の展望
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. まとめと今後の展望">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-agent-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Agent SDK活用のメリット
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 今後の展望
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="agent-sdk"><strong>Agent SDKに関する調査</strong></h1>
+<pre><code>(2025.03.31 須子）
+</code></pre>
+<h2 id="1-agent-sdk"><strong>1. Agent SDKとは？</strong></h2>
+<h3 id="11-agent-sdk"><strong>1.1 Agent SDKの定義と概要</strong></h3>
+<ul>
+<li><strong>定義</strong>: AIエージェント（自律的にタスクを実行するAIプログラム）を効率的に開発するためのソフトウェア開発キット</li>
+<li>AIエージェントは外部ツール/APIにアクセスし、複数ステップの処理を自律的に実行</li>
+<li><strong>特徴</strong>: マルチターン対話管理、ツール呼び出し、タスクの自動実行を少ない労力で実現</li>
+<li>OpenAI、Microsoft、Googleなど主要企業が各社プラットフォーム向けに提供abcd</li>
+</ul>
+<p>### <strong>1.2 Agent SDKの主な機能と用途</strong>
+* <strong>主要機能</strong>:</p>
+<ul>
+<li>ツールの統合（ウェブ検索、DB問合せ、API呼出、コード実行）</li>
+<li>マルチステップのタスク実行（エージェントループ）</li>
+<li>複数エージェントの協調（オーケストレーション、ハンドオフ）</li>
+<li>ガードレール（安全・品質管理）</li>
+<li>トレース（実行過程の記録・可視化）</li>
+<li>
+<p><strong>主な用途</strong>:</p>
+</li>
+<li>
+<p>カスタマーサポートの自動化</p>
+</li>
+<li>情報収集・調査業務</li>
+<li>コンテンツ生成</li>
+<li>コードアシスタント</li>
+<li>営業支援（セールスプロスペクティング）</li>
+</ul>
+<p>### <strong>1.3 主要企業のAgent SDK概要</strong>
+* <strong>OpenAI</strong>:</p>
+<ul>
+<li>Pythonベース、最小限のプリミティブで強力な機能実現</li>
+<li>他社LLMモデルにも対応可能</li>
+<li>強み: 開発者フレンドリーな設計、オープンソースの拡張性</li>
+<li>
+<p><strong>Microsoft</strong>:</p>
+</li>
+<li>
+<p>Microsoft 365 Agents SDKとして提供</p>
+</li>
+<li>企業システム統合・マルチチャネル展開重視</li>
+<li>強み: Copilotプラットフォーム連携、エンタープライズ向け</li>
+<li>
+<p><strong>Google</strong>:</p>
+</li>
+<li>
+<p>Vertex AI Agent Builder（ノーコード型開発ツール）</p>
+</li>
+<li>強み: 事前構築された拡張機能・データ接続の豊富さ</li>
+<li>
+<p><strong>その他</strong>:</p>
+</li>
+<li>
+<p>AWS: Amazon Bedrock Agents</p>
+</li>
+<li>オープンソース: LangChain、Hugging Face Transformers Agents</li>
+</ul>
+<p>## <strong>2. OpenAI Agent SDKについて</strong></p>
+<p>### <strong>2.1 OpenAI Agent SDKの基本概念と4つの主要コンポーネント</strong>
+* <strong>エージェント (Agents)</strong>:</p>
+<ul>
+<li>LLMに役割指示・使用可能ツール・設定を与えたもの</li>
+<li><code>Agent</code>クラスで表現（name、instructions、toolsを指定）</li>
+<li>
+<p><strong>ツール（Tools):</strong></p>
+</li>
+<li>
+<p>エージェントが利用する拡張機能や外部API</p>
+</li>
+<li>エージェントは適切なタイミングで定義されたツールを呼び出し結果を自身の応答に反映</li>
+<li>
+<p><strong>ハンドオフ (Handoffs)</strong>:</p>
+</li>
+<li>
+<p>エージェント間のタスク引継ぎ機構</p>
+</li>
+<li>典型例: トリアージエージェントが他の専門エージェントに振り分け</li>
+<li>
+<p><strong>ガードレール (Guardrails)</strong>:</p>
+</li>
+<li>
+<p>入出力の検証・フィルタリング機構</p>
+</li>
+<li>入力/出力の2種類のガードレールを設定可能</li>
+<li>条件に該当時は例外（トリップワイヤー）発火でループ制御</li>
+</ul>
+<p>### <strong>2.2 ツールとして使える拡張機能の具体的例</strong>
+* <strong>ツールの種類</strong>:</p>
+<ul>
+<li>ホステッドツール: OpenAI提供の組み込みツール</li>
+<li>関数ツール: 開発者定義のPython関数をツール化</li>
+<li>エージェントをツールとして使用: 他エージェントを関数的に呼出</li>
+<li>
+<p><strong>OpenAI提供の組み込みツール</strong>:</p>
+</li>
+<li>
+<p>WebSearchTool: インターネット検索</p>
+</li>
+<li>FileSearchTool: ベクトルストアによる情報検索</li>
+<li>ComputerTool: ユーザーPC操作の自動化</li>
+<li>
+<p><strong>カスタム関数ツール</strong>:</p>
+</li>
+<li>
+<p><code>@function_tool</code>デコレータでPython関数をツール化</p>
+</li>
+<li>関数名→ツール名、ドックストリング→説明文、型ヒント→スキーマを自動推論</li>
+<li>社内システム・APIを直接エージェントに統合可能</li>
+</ul>
+<p>## <strong>3. リアルタイムWeb検索を使ったリサーチ・レポート作成エージェントの作成例</strong></p>
+<p>### <strong>3.1 開発対象</strong>
+* エージェントがユーザのリサーチテーマに合わせてインターネット検索を行い、最新のニュース記事・論文・公的統計データなどを収集。情報を要約してレポートを作成し、引用先や関連リンクまで提示する。</p>
+<p>### <strong>3.2  Agent SDKを用いない場合</strong>
+* <strong>環境準備</strong>: Google Colabで必要なライブラリをインストールし、OpenAI APIキーを設定。
+* <strong>検索ツールの実装</strong>: 一般的なWeb検索を行い、関連情報を取得（Google Custom Search APIまたはBing Search APIを活用）。
+* <strong>データ収集と要約</strong>: Webページのテキストを抽出し、GPT-4を使って要約。
+* <strong>レポート生成</strong>: 章構成のある詳細なレポートを作成し、PDFとして整形。
+* <strong>レポート出力</strong>: PDFをダウンロード可能にし、必要ならGoogle Driveに保存。</p>
+<p><strong>ライブラリーのインストール</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># ライブラリのインストール（Colabマジックコマンドを使用）!pip install openai requests beautifulsoup4 pdfkit  !apt-get update -y  !apt-get install -y wkhtmltopdf  # インストール後のインポートimport openaiimport requestsfrom bs4 import BeautifulSoupimport pdfkitimport os</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>OpenAI APIキーの設定</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># OpenAI APIキーの設定（環境変数経由が望ましい）os.environ["OPENAI_API_KEY"] \= "sk-XXXXXXXXXXXXXXXXXXXXX"  # 自分のAPIキーに置き換えopenai.api_key \= os.getenv("OPENAI_API_KEY")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Googleカスタム検索API</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 検索APIの設定（自分のAPIキーと検索エンジンIDを入力）API_KEY \= "YOUR_GOOGLE_API_KEY"            # 自分のAPIキーに置き換えSEARCH_ENGINE_ID \= "YOUR_SEARCH_ENGINE_ID" # 自分の検索エンジンIDに置き換えdef web_search(query, num_results=5):    # Google Custom Search JSON APIのエンドポイントを構築    url \= (f"https://www.googleapis.com/customsearch/v1?key={API_KEY}"           f"\&amp;cx={SEARCH_ENGINE_ID}\&amp;q={query}\&amp;num={num_results}")    resp \= requests.get(url)    data \= resp.json()    # 結果からタイトルとURLを抽出    results \= []    for item in data.get("items", []):        title \= item.get("title")        link \= item.get("link")        snippet \= item.get("snippet")        results.append({"title": title, "link": link, "snippet": snippet})    return results# 検索実行例query \= "最新のAI技術 動向"results \= web_search(query, num_results=3)for i, res in enumerate(results, start=1):    print(f"[{i}] {res['title']} - {res['link']}")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Webページの取得と記事本文の取得</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 検索結果の一番目のページを取得if not results:    raise Exception("検索結果が見つかりません。")target_url \= results[0]['link']page_resp \= requests.get(target_url)page_resp.raise_for_status()  # ページ取得が成功したか確認# BeautifulSoupでHTML解析soup \= BeautifulSoup(page_resp.text, 'html.parser')# 方法1: \&lt;p&gt;タグのテキストを全て結合して取得paragraphs \= [p.get_text() for p in soup.find_all('p')]article_text \= '\n'.join(paragraphs)# 確認のため抽出したテキストの最初の一部を表示print(article_text[:500])</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>全テキストから不要タグを除外</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 上級: 全テキストから不要タグを除外する例text_elements \= soup.find_all(text=True)blacklist \= ['[document]', 'noscript', 'header', 'html', 'meta',              'head', 'input', 'script', 'style']  # 除外するタグfiltered_text \= []for element in text_elements:    if element.parent.name not in blacklist:        filtered_text.append(element.strip())clean_text \= ' '.join(filtered_text)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>GPT-4による要約生成</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># GPT-4を使って記事内容を要約system_prompt \= "あなたは有能なリサーチアシスタントです。与えられた記事の内容をわかりやすく要約してください。"user_prompt \= f"記事の内容:\n{article_text}\n\n上記の内容を日本語でわかりやすく要約してください。"response \= openai.ChatCompletion.create(    model="gpt-4",    messages=[        {"role": "system", "content": system_prompt},        {"role": "user", "content": user_prompt}    ],    temperature=0.7,  # 必要に応じて応答の多様性を調整    max_tokens=1000   # 要約に割り当てるトークン数の上限)summary_text \= response['choices'][0]['message']['content']print("=== 要約結果 \===")print(summary_text)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>レポートの章構成と内容生成</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 既に得られた要約結果を使用して、各セクションの内容をGPT-4に作成させるoverview_prompt \= f"上記の要約を基に、記事全体の概要を2〜3文で書いてください。"findings_prompt \= f"上記の要約を基に、その記事から得られる主な発見や重要ポイントを3つ箇条書きで挙げてください。"details_prompt \= f"上記の要約を基に、記事の詳細な内容説明を段落で書いてください。"overview_resp \= openai.ChatCompletion.create(    model="gpt-4",    messages=[{"role": "user", "content": overview_prompt}],    max_tokens=300)overview_text \= overview_resp['choices'][0]['message']['content']findings_resp \= openai.ChatCompletion.create(    model="gpt-4",    messages=[{"role": "user", "content": findings_prompt}],    max_tokens=300)findings_text \= findings_resp['choices'][0]['message']['content']details_resp \= openai.ChatCompletion.create(    model="gpt-4",    messages=[{"role": "user", "content": details_prompt}],    max_tokens=1000)details_text \= details_resp['choices'][0]['message']['content']print("概要:\n", overview_text)print("主な発見:\n", findings_text)print("詳細情報:\n", details_text[:200], "...")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>参考文献リストの作成</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 参考文献リスト作成（タイトルとURLのペア）references \= []page_title \= soup.title.string if soup.title else "Webページ"references.append({"title": page_title, "url": target_url})# 他に参考にしたURLがあれば追加可能#print(references)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>HTMLレポートの組み立てとPDF変換</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 箇条書き（主な発見）を\&lt;li&gt;タグに整形findings_lines \= [line.strip() for line in findings_text.splitlines() if line.strip()]findings_html \= "\&lt;ul&gt;\n" + "\n".join(f"  \&lt;li&gt;{line.lstrip('-・')}\&lt;/li&gt;" for line in findings_lines) + "\n\&lt;/ul&gt;"# 参考文献を\&lt;li&gt;タグに整形（番号付きリスト\&lt;ol&gt;を使用）references_html \= "\&lt;ol&gt;\n"for ref in references:    title \= ref['title']    url \= ref['url']    references_html += f"  \&lt;li&gt;\&lt;a href='{url}'&gt;{title}\&lt;/a&gt;\&lt;/li&gt;\n"references_html += "\&lt;/ol&gt;"# HTML全文の組み立てhtml_content \= f"""\&lt;html&gt;\&lt;head&gt;\&lt;meta charset="UTF-8"&gt;\&lt;style&gt;  body {{ font-family: "IPAexGothic", sans-serif; }}  h1, h2 {{ color: #2e6c80; }}\&lt;/style&gt;\&lt;/head&gt;\&lt;body&gt;\&lt;h1&gt;リサーチレポート\&lt;/h1&gt;\&lt;h2&gt;概要\&lt;/h2&gt;\&lt;p&gt;{overview_text}\&lt;/p&gt;\&lt;h2&gt;主な発見\&lt;/h2&gt;{findings_html}\&lt;h2&gt;詳細情報\&lt;/h2&gt;\&lt;p&gt;{details_text}\&lt;/p&gt;\&lt;h2&gt;参考文献\&lt;/h2&gt;{references_html}\&lt;/body&gt;\&lt;/html&gt;"""# HTML構造を確認（必要ならprint）#print(html_content)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># HTMLコンテンツをPDFファイルに変換output_pdf \= "research_report.pdf"pdfkit.from_string(html_content, output_pdf)# PDFが正常に生成されたか確認import osprint(output_pdf, "生成済み:", os.path.exists(output_pdf))</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>レポートの出力</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">from google.colab import files# PDFをローカルにダウンロードfiles.download(output_pdf)  # （オプション）PDFをGoogle Driveにコピーして保存from google.colab import drivedrive.mount('/content/drive')!cp {output_pdf} /content/drive/MyDrive/</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-openai-agent-sdk"><strong>3.3 OpenAi Agent SDKを用いた場合</strong></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 1. 必要ライブラリのインストールとwkhtmltopdfのセットアップ!pip install openai-agents requests beautifulsoup4 pdfkit!apt-get update -y!apt-get install -y wkhtmltopdf</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 2. インポートとAPIキーの設定import osimport requestsimport pdfkitfrom bs4 import BeautifulSoup# 最新のAgents SDKモジュールをインポートimport openaifrom openai.agents import Agent, Runner, function_tool, set_default_openai_key# 最新のSDKでは、set_default_openai_key()を使ってAPIキーを設定します（コマンドラインからexportする必要はありません）set_default_openai_key("sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")  # ←ご自身のAPIキーに置き換えてください</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 3. ツールの定義# ① Web検索ツール：Google Custom Search API を利用@function_tooldef web_search(query: str) -&gt; str:    """    Google Custom Search APIでクエリを実行し、上位5件の検索結果（タイトル、URL、スニペット）を返します。    """    GOOGLE_CSE_API_KEY \= "YOUR_GOOGLE_API_KEY"   # ご自身のGoogle APIキーに置き換え    GOOGLE_CSE_ID \= "YOUR_SEARCH_ENGINE_ID"       # ご自身の検索エンジンIDに置き換え    url \= (f"https://www.googleapis.com/customsearch/v1?"           f"key={GOOGLE_CSE_API_KEY}\&amp;cx={GOOGLE_CSE_ID}\&amp;q={query}\&amp;num=5")    resp \= requests.get(url)    data \= resp.json()    items \= data.get("items", [])    if not items:        return "検索結果がありませんでした。"    results_text \= ""    for i, item in enumerate(items, start=1):        title \= item.get("title", "")        link \= item.get("link", "")        snippet \= item.get("snippet", "")        results_text += f"[{i}] {title}\nURL: {link}\nSnippet: {snippet}\n\n"    return results_text# ② 記事取得ツール：指定URLからHTMLを取得し、本文（\&lt;p&gt;タグ）を抽出@function_tooldef fetch_article(url: str) -&gt; str:    """    URLのページを取得し、HTML内の\&lt;p&gt;タグから本文テキストを抽出して返します。    """    try:        resp \= requests.get(url, timeout=10)        resp.raise_for_status()    except Exception as e:        return f"ページ取得に失敗しました: {str(e)}"    soup \= BeautifulSoup(resp.text, 'html.parser')    paragraphs \= soup.find_all("p")    text \= "\n".join([p.get_text().strip() for p in paragraphs if p.get_text().strip()])    if not text:        return "本文を抽出できませんでした。"    return text# ③ PDF生成ツール：HTML文字列からPDFを生成@function_tooldef make_pdf(html_content: str) -&gt; str:    """    HTMLコンテンツをPDFに変換し、ファイル名を返します。    """    output_pdf \= "report.pdf"    try:        pdfkit.from_string(html_content, output_pdf)    except Exception as e:        return f"PDF生成に失敗しました: {str(e)}"    return f"PDFを生成しました: {output_pdf}"</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 4. エージェントの定義# 今回は、リサーチエージェントとして、以下の手順を実行するように指示します：# 1. ユーザーのトピックに基づいてweb_searchツールで最新情報を検索# 2. 必要に応じて、fetch_articleツールで詳細情報を取得# 3. 取得した情報を元に、章構成（概要・主な発見・詳細情報・参考文献）のレポートを作成# 4. 最終的に、レポートのHTMLをmake_pdfツールでPDFに変換し、その結果を返すagent_instructions \= """あなたはリサーチエージェントです。以下の手順で動作してください。1. ユーザーから与えられたトピックに対して、まずweb_searchツールを使い、最新情報の検索結果を取得してください。2. 検索結果から関連性の高い記事のURLを見つけ、fetch_articleツールで記事本文を取得してください。3. 取得した情報をもとに、概要、主な発見、詳細情報、参考文献の4つの章に分けたレポートを作成してください。4. 作成したレポートをHTML形式に整形し、make_pdfツールを使ってPDFを生成してください。最終的に、PDF生成の結果（ファイル名など）を出力してください。"""agent \= Agent(    name="ResearchAgent",    instructions=agent_instructions,    model="gpt-4o",    tools=[web_search, fetch_article, make_pdf])</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 5. エージェントの実行# Runner.run_sync() を使って、エージェントにタスクを指示します。result \= Runner.run_sync(agent, "最新のAI技術の進展について調査し、詳細なレポートをPDFにまとめてください。")print("最終出力:")print(result.final_output)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"># 6. 生成されたPDFのダウンロード（Google Colabの場合）from google.colab import filesfiles.download("report.pdf")</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="4"><strong>4. まとめと今後の展望</strong></h2>
+<h3 id="41-agent-sdk"><strong>4.1 Agent SDK活用のメリット</strong></h3>
+<p>従来の方法とAgent SDKを使用した方法を比較すると、以下のメリットが明らかになる：</p>
+<ul>
+<li><strong>コード量の大幅削減</strong></li>
+<li>Agent SDKではエージェントのハイレベルな指示と必要なツールを定義するだけで済む</li>
+<li>各種ロジックの実装が大幅に簡略化される</li>
+<li><strong>開発効率の向上</strong></li>
+<li>段階的なタスク処理の流れをエージェントに委任できる</li>
+<li>エージェントが自律的に判断して適切なツールを呼び出す</li>
+<li><strong>機能拡張の容易さ</strong></li>
+<li>新しいツールの追加が容易（関数を定義してデコレータを付与するだけである）</li>
+<li>エージェントの指示を修正するだけで新しい動作パターンに対応可能である</li>
+</ul>
+<h3 id="42"><strong>4.2 今後の展望</strong></h3>
+<ul>
+<li><strong>エンタープライズ領域での普及</strong>:</li>
+<li>社内システムとの連携によるカスタムエージェントの増加</li>
+<li>複雑なワークフローの自動化へのAgent SDK活用</li>
+<li><strong>マルチモーダル対応</strong>:</li>
+<li>画像・音声・動画などのマルチモーダルデータを処理するエージェントの開発</li>
+<li>視覚的・聴覚的情報を含む複雑なタスクの自動化</li>
+<li><strong>エージェント間連携の発展</strong>:</li>
+<li>専門化されたエージェント間の協調による複雑タスクの解決</li>
+<li>チーム型エージェントシステムの構築フレームワークの整備</li>
+<li><strong>学習・適応型エージェントの登場</strong>:</li>
+<li>フィードバックから学習するエージェントの開発</li>
+<li>ユーザーの好みや行動パターンに適応するパーソナライズドエージェント</li>
+</ul>
+<p>Agent SDKは、AIエージェント開発の民主化と標準化を促進し、開発者がより少ない労力で高度なAI機能を実装できる環境を提供している。今後のAI開発において中心的な役割を果たすことが期待される。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
