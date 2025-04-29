@@ -6,16 +6,35 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest         # 24.04 でも OK
+    permissions:
+      contents: write              # gh-pages に push するので write を付与
     steps:
+      # 1) 取得
       - uses: actions/checkout@v4
+
+      # 2) Python と依存関係
       - uses: actions/setup-python@v5
-        with: { python-version: '3.13' }
-      - run: pip install openai markdown frontmatter requests
-      - name: Summarize & Slack
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install mkdocs-material openai markdown frontmatter requests
+
+      # 3) 要約 + Slack（前回ご提示のスクリプト）
+      - name: Summarize & Notify
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: python .github/scripts/summarize_and_notify.py
-      - name: Deploy MkDocs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@v1
+
+      # 4) MkDocs ビルド
+      - name: Build mkdocs
+        run: mkdocs build --strict
+
+      # 5) GitHub Pages へデプロイ
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site        # mkdocs build の出力先
