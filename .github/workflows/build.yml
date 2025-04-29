@@ -21,7 +21,15 @@ jobs:
           python-version: '3.11'
 
       - name: Install deps
-        run: pip install mkdocs-material openai markdown frontmatter requests
+        run: |
+          pip install --no-cache-dir \
+              mkdocs-material \
+              openai \
+              python-frontmatter \
+              markdown \
+              requests
+          # 間違って入った 'frontmatter' があれば削除
+          pip uninstall -y frontmatter || true
 
       # 3) 要約 + Slack（前回ご提示のスクリプト）
       - name: Summarize & Notify
