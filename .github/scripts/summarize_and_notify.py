@@ -7,7 +7,7 @@ def changed_files():
     base = os.getenv('GITHUB_SHA')
     prev = subprocess.check_output(['git','rev-parse',f'{base}^']).decode().strip()
     diff = subprocess.check_output(['git','diff','--name-only',prev,base]).decode().splitlines()
-    return [f for f in diff if f.startswith('docs/src/') and f.endswith('.md')]
+    return [f for f in diff if f.startswith('docs/logs/') and f.endswith('.md')]
 
  # 環境変数 OPENAI_API_KEY を自動読込
 
@@ -30,7 +30,7 @@ def post_slack(title, summary, url):
 for path in changed_files():
     post = frontmatter.load(path)
     summary = summarize(post.content)
-    summary_path = path.replace('src', 'summaries')
+    summary_path = path.replace('logs', 'summaries')
     os.makedirs(os.path.dirname(summary_path), exist_ok=True)
     with open(summary_path, 'w') as f: f.write(summary)
     html_url = os.environ.get('GITHUB_SERVER_URL') + '/' + os.environ.get('GITHUB_REPOSITORY') + '/blob/gh-pages/' + summary_path.replace('docs/', '')
