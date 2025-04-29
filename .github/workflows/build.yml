@@ -17,7 +17,7 @@ name: Build & Publish
 
 on:
   push:
-    branches: [ main ]            # ← デフォルトブランチ
+    branches: [ master ]            # ← デフォルトブランチ
     paths:
       - "docs/logs/*.md"              # 資料フォルダ全体
       - "mkdocs.yml"
