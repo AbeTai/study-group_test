@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --no-cache-dir \
-              openai \                 
+              openai \
               mkdocs-material \
               python-frontmatter \
               markdown \
