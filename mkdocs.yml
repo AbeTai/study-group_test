@@ -4,6 +4,6 @@ theme:
 nav:
   - Home: index.md
   - Logs:
-      - 2025-04-28: src/2025-04-28-log.md
+      - 2025-04-28: logs/2025-04-28.md
 plugins:
   - search
