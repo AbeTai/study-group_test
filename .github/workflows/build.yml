@@ -19,7 +19,7 @@ on:
   push:
     branches: [ main ]            # ← デフォルトブランチ
     paths:
-      - "docs/**.md"              # 資料フォルダ全体
+      - "docs/logs/*.md"              # 資料フォルダ全体
       - "mkdocs.yml"
       - ".github/**"              # WF・スクリプト変更も対象
   workflow_dispatch:              # 手動実行ボタン
