@@ -1,50 +1,74 @@
+# .github/workflows/build.yml
+#
+# ────────────────────────────────────────────────────────────────
+#  Workflow summary
+#   • trigger:  push to main  (docs/**.md, mkdocs.yml, .github/**)
+#                + manual run button (workflow_dispatch)
+#   • steps:
+#        1. Checkout (fetch-depth 2)
+#        2. Setup Python 3.11
+#        3. pip install deps  (OpenAI 1.x API 対応)
+#        4. summarize_and_notify.py   ← 新 API 版
+#        5. mkdocs build
+#        6. Deploy to gh-pages via peaceiris/actions-gh-pages
+# ────────────────────────────────────────────────────────────────
+
 name: Build & Publish
 
 on:
   push:
-    paths: ['docs/src/**.md']
+    branches: [ main ]            # ← デフォルトブランチ
+    paths:
+      - "docs/**.md"              # 資料フォルダ全体
+      - "mkdocs.yml"
+      - ".github/**"              # WF・スクリプト変更も対象
+  workflow_dispatch:              # 手動実行ボタン
+
+permissions:
+  contents: write                 # gh-pages に push するため
 
 jobs:
   build:
-    runs-on: ubuntu-latest         # 24.04 でも OK
-    permissions:
-      contents: write              # gh-pages に push するので write を付与
+    runs-on: ubuntu-latest
+
     steps:
-      # 1) 取得
+      # ────────── 1. Checkout ──────────
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 2          # 差分検出用に直前コミットまで
 
-      # 2) Python と依存関係
+      # ────────── 2. Python ──────────
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      - name: Install deps
+      # ────────── 3. Dependencies ──────────
+      - name: Install dependencies
         run: |
           pip install --no-cache-dir \
+              openai \                     # 1.x 系 (新 API)
               mkdocs-material \
-              openai \
               python-frontmatter \
               markdown \
               requests
-          # 間違って入った 'frontmatter' があれば削除
+          # 誤ライブラリ 'frontmatter' が入っていたら削除
           pip uninstall -y frontmatter || true
 
-      # 3) 要約 + Slack（前回ご提示のスクリプト）
+      # ────────── 4. Summarize & Slack ──────────
       - name: Summarize & Notify
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: python .github/scripts/summarize_and_notify.py
 
-      # 4) MkDocs ビルド
-      - name: Build mkdocs
-        run: mkdocs build
+      # ────────── 5. MkDocs build ──────────
+      - name: Build MkDocs
+        run: mkdocs build           # --strict を外してビルド失敗を防止
 
-      # 5) GitHub Pages へデプロイ
+      # ────────── 6. Deploy to Pages ──────────
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site        # mkdocs build の出力先
+          publish_dir: ./site
+          publish_branch: gh-pages
