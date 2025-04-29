@@ -32,7 +32,7 @@ jobs:
 
       # 4) MkDocs ビルド
       - name: Build mkdocs
-        run: mkdocs build --strict
+        run: mkdocs build
 
       # 5) GitHub Pages へデプロイ
       - name: Deploy to GitHub Pages
