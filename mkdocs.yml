@@ -1,0 +1,9 @@
+site_name: DS Study Logs
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Logs:
+      - 2025-04-28: src/2025-04-28-log.md
+plugins:
+  - search

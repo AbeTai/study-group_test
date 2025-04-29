@@ -1,0 +1,6 @@
+mkdocs-material
+mkdocs
+python-frontmatter
+openai
+requests
+markdown

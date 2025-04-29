@@ -1,0 +1,21 @@
+name: Build & Publish
+
+on:
+  push:
+    paths: ['docs/src/**.md']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.13' }
+      - run: pip install openai markdown frontmatter requests
+      - name: Summarize & Slack
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python .github/scripts/summarize_and_notify.py
+      - name: Deploy MkDocs
+        uses: mhausenblas/mkdocs-deploy-gh-pages@v1
