@@ -1,4 +1,7 @@
-import os, subprocess, json, glob, frontmatter, requests, markdown, openai
+import os, subprocess, json, glob, frontmatter, requests, markdown
+# 先頭で
+from openai import OpenAI
+client = OpenAI()  
 
 def changed_files():
     base = os.getenv('GITHUB_SHA')
@@ -6,14 +9,18 @@ def changed_files():
     diff = subprocess.check_output(['git','diff','--name-only',prev,base]).decode().splitlines()
     return [f for f in diff if f.startswith('docs/src/') and f.endswith('.md')]
 
-def summarize(md_text):
-    resp = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
+ # 環境変数 OPENAI_API_KEY を自動読込
+
+def summarize(md_text: str) -> str:
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini",      # または gpt-4o 等
         messages=[
-          {"role":"system","content":"あなたはプロの技術ライターです。"},
-          {"role":"user","content":f"次の Markdown を初心者にも分かる7行以内の箇条書きで要約してください：\n\n{md_text}"}
+            {"role": "system", "content": "あなたはプロの技術ライターです。"},
+            {"role": "user", "content": f"次の Markdown を初心者にも分かる7行以内の箇条書きで要約してください：\n\n{md_text}"}
         ],
-        max_tokens=256, temperature=0.3)
+        max_tokens=256,
+        temperature=0.3,
+    )
     return resp.choices[0].message.content.strip()
 
 def post_slack(title, summary, url):

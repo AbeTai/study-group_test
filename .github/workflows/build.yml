@@ -22,7 +22,7 @@ jobs:
 
       - name: Install deps
         run: |
-          pip install --no-cache-dir \
+          pip install --no-cache-dir openai
               mkdocs-material \
               openai \
               python-frontmatter \
